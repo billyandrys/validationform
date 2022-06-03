@@ -1,26 +1,28 @@
 import React from "react";
 import { Label, GroupInput, LegendError, Input, IconValidate } from './../elements/Form'
-import { faCheckCircle} from '@fortawesome/free-solid-svg-icons'
-export default function ComponentInput({ regExp, setUser, state, label, placeholder, type, name, legendError}) {
+import { faCheckCircle, faTimesCircle } from '@fortawesome/free-solid-svg-icons';
+export default function ComponentInput({ regExp, setChange, state, label, placeholder, type, name, legendError, funcction}) {
   const onChange = (e)=>{
-    setUser({...state, fielf: e.target.value})
-    console.log(state)
+    setChange({...state, fielf: e.target.value})
   }
 
   const validation =()=>{
     if(regExp){
       if(regExp.test(state.fielf)){
-        setUser({...state, value:'true'})
-          console.log('correct')
+        setChange({...state, value:'true'})
+         
       }else{
-        setUser({...state, value:'false'})
+        setChange({...state, value:'false'})
+        
       }
     }
+
+    funcction()
   }
 
   return (
     <div>
-      <Label htmlFor={name}>{label}</Label>
+      <Label htmlFor={name} valid={state.value}>{label}</Label>
       <GroupInput>
         <Input  type={type}
                 placeholder={placeholder}
@@ -32,16 +34,10 @@ export default function ComponentInput({ regExp, setUser, state, label, placehol
                 onBlur={validation}
                 valid={state.value}
                 />
-        <IconValidate icon={faCheckCircle} />
+        <IconValidate icon={state.valid === 'true' ? faCheckCircle : faTimesCircle} valid={state.value}/>
       </GroupInput>
-      <LegendError>Lorem upsum</LegendError>
+      <LegendError valid={state.value}>{legendError}</LegendError>
     </div>
   );
 }
 
-/*
-Sres Salud Total 
-En tramite de la siguientes autorizaciones adjutas, en los posible en el mismo laboratorio
-La repusta al email yuleysatencio@gmail.com .Ya que tengo inconvenientes con su plataforma.
-
-Gracias*/
